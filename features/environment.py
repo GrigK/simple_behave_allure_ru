@@ -33,8 +33,20 @@ def before_all(context):
 def before_feature(context, feature):
     # Create logger
     context.logger = logging.getLogger(PROJECT_NAME)
-    handler = logging.FileHandler('.' + os.sep + LOG_DIR + os.sep + PROJECT_NAME + '.log')
-    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    handler = logging.FileHandler('.' + os.sep + LOG_DIR + os.sep + PROJECT_NAME + '.log', mode='w')
+    # #############################################################################
+    # log highlighting ideolog
+    # format:
+    # ^(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2},\d{3})\s(\S*)\s*(:\d+)\s*(\w*)\s*(.*)$
+    # time 0 severity 5 category 1
+    # patterns:
+    # ^\s*DEBUG\s*$
+    # ^\s*INFO\s*$
+    # ^\s*WARNING\s*$
+    # ^\s*ERROR\s*$
+    # ^\s*CRITICAL\s*$
+    # #############################################################################
+    formatter = logging.Formatter('%(asctime)s %(filename)-18s:%(lineno)-5d %(levelname)-8s %(message)s')
     handler.setFormatter(formatter)
     context.logger.addHandler(handler)
     context.logger.setLevel(logging.DEBUG)
